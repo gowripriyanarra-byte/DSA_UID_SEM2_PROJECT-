@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Influencer Guard Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* --- NEW COLOR PALETTE --- */
+:root {
+    --bg: #0a0a0c;
+    --panel: rgba(255, 255, 255, 0.05);
+    --accent: #8b5cf6; /* Electric Violet */
+    --accent-glow: rgba(139, 92, 246, 0.3);
+    --safe: #06b6d4; /* Cyan */
+    --warn: #f59e0b; /* Amber */
+    --danger: #f43f5e; /* Rose */
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #0a0a0c 50%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* HEADER */
+.header {
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 12, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+/* FEED */
+.feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+/* CARD - NEON STYLE */
+.card {
+    background: var(--panel);
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.card:hover { 
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.card b { color: var(--accent); font-size: 1.1rem; }
+
+/* ACTIONS */
+.actions button {
+    margin-top: 15px;
+    margin-right: 10px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.actions button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* INPUT AREA */
+.input-bar {
+    display: flex;
+    padding: 20px 30px;
+    background: rgba(10, 10, 12, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 15px;
+}
+
+input {
+    flex: 1;
+    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #16161a;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* MODALS */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: #16161a;
+    color: white;
+    padding: 35px;
+    border-radius: 24px;
+    width: 380px;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+.btn {
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 12px;
+    width: 100%;
+    font-weight: 700;
+    transition: 0.3s;
+    background: var(--panel);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn:hover {
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Header Action Buttons */
+.header button {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.header button:hover {
+    background: white;
+    color: black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h3>🛡️ INFLUENCER GUARD PRO</h3>
+    <div>
+        <button onclick="openHistory()">📊 Analytics</button>
+        <button onclick="openSettings()">⚙️</button>
+    </div>
+</div>
+
+<div class="feed" id="feed">
+    <div style="text-align:center; padding-top: 50px; color: var(--text-dim);">
+        <p>Awaiting incoming activity...</p>
+    </div>
+</div>
+
+<div class="input-bar">
+    <input id="user" placeholder="User Handle" style="flex: 0.25;">
+    <input id="msg" placeholder="Type a comment to scan...">
+    <button style="background: var(--accent); color:white; border:none; border-radius:14px; padding: 0 30px; cursor:pointer; font-weight:700;" onclick="add()">ANALYSIS</button>
+</div>
+
+<!-- HISTORY -->
+<div class="modal" id="historyModal">
+    <div class="modal-box">
+        <h3 style="margin-top:0; color:var(--safe);">Security Logs</h3>
+        <div id="historyContent"></div>
+        <button onclick="closeHistory()" class="btn" style="margin-top:15px; background: #334155; border:none;">Return to Hub</button>
+    </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="modal" id="settingsModal">
+    <div class="modal-box">
+        <h3 style="margin-top:0; color:var(--accent);">Auto-Block Rules</h3>
+        <p style="font-size:13px; color:var(--text-dim); margin-bottom: 20px;">Maximum violations allowed before blacklist:</p>
+        <input type="number" id="limit" value="3" style="width: 90%; margin-bottom: 25px;">
+        <button onclick="saveSettings()" class="btn" style="background: var(--accent);">Update Policy</button>
+    </div>
+</div>
+
+<script>
+let history = [];
+let userStrike = {};
+let blockCount = {};
+let blockedUsers = {};
+let autoLimit = 3;
+
+function add(){
+    let user = document.getElementById('user').value || "guest_user";
+    let text = document.getElementById('msg').value;
+    if(!text) return;
+
+    if(blockedUsers[user]){
+        alert("🚫 RESTRICTED: User is blacklisted.");
+        return;
+    }
+
+    let id = Date.now();
+    let feed = document.getElementById('feed');
+    if(feed.innerText.includes("Awaiting")) feed.innerHTML = "";
+
+    let card = document.createElement('div');
+    card.className = "card";
+    card.innerHTML = `
+        <b>@${user}</b><br>
+        <div style="margin: 10px 0; font-size: 0.95rem; line-height: 1.4;">${text}</div>
+        <span id="b-${id}" style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--text-dim);">SYSTEM CHECKING...</span>
+        <div id="a-${id}" class="actions"></div>
+    `;
+    feed.prepend(card);
+
+    check(id, text, user);
+    document.getElementById('msg').value = "";
+}
+
+async function check(id, text, user){
+    let badge = document.getElementById(`b-${id}`);
+    let actions = document.getElementById(`a-${id}`);
+
+    try {
+        let res = await fetch('/predict',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({text:text})
+        });
+        let data = await res.json();
+        
+        badge.innerText = data.message;
+
+        if(data.status === "unsafe"){
+            userStrike[user] = (userStrike[user] || 0) + 1;
+            badge.style.color = "var(--danger)";
+            if(userStrike[user] >= autoLimit){
+                blockedUsers[user] = true;
+                badge.innerText = "🛑 SYSTEM BLACKLISTED";
+                history.push({user,text,status:"Auto Blocked"});
+                actions.innerHTML = "<b style='color:var(--danger); font-size: 12px;'>PERMANENT BAN APPLIED</b>";
+                return;
+            }
+        } else {
+            badge.style.color = "var(--safe)";
+        }
+    } catch(e) {
+        badge.innerText = "LOCAL SCAN COMPLETE";
+        badge.style.color = "var(--safe)";
+    }
+
+    actions.innerHTML = `
+        <button onclick="saveAction('${user}','${text}','Blocked',${id})" style="background:var(--danger);">Block</button>
+        <button onclick="saveAction('${user}','${text}','Flagged',${id})" style="background:var(--warn);">Flag</button>
+        <button onclick="saveAction('${user}','${text}','Posted',${id})" style="background:var(--safe);">Approve</button>
+    `;
+}
+
+function saveAction(user,text,status,id){
+    history.push({user,text,status});
+    let actions = document.getElementById(`a-${id}`);
+    
+    if(status === "Blocked"){
+        blockCount[user] = (blockCount[user] || 0) + 1;
+        if(blockCount[user] >= autoLimit){
+            blockedUsers[user] = true;
+            actions.innerHTML = "<b style='color:var(--danger)'>🛑 PERMANENTLY BANNED</b>";
+            return;
+        }
+    }
+    
+    let color = status === "Blocked" ? "var(--danger)" : (status === "Flagged" ? "var(--warn)" : "var(--safe)");
+    actions.innerHTML = `<span class="btn" style="display:inline-block; width:auto; padding: 4px 12px; margin:0; font-size:11px; border-color:${color}; color:${color}; cursor:default;">DECISION: ${status}</span>`;
+}
+
+function showMainHistory(){
+    let content = document.getElementById("historyContent");
+    let blockedUsersCount = Object.keys(blockedUsers).length;
+    let blockedComments = history.filter(h=>h.status==="Blocked").length;
+    let flagged = history.filter(h=>h.status==="Flagged").length;
+    let posted = history.filter(h=>h.status==="Posted").length;
+    
+    content.innerHTML = `
+        <button class="btn" onclick="showHistory('blockedUsers')">BLACKLISTED USERS (${blockedUsersCount})</button>
+        <button class="btn" onclick="showHistory('blockedComments')">BANNED CONTENT (${blockedComments})</button>
+        <button class="btn" onclick="showHistory('flagged')">FLAGGED ITEMS (${flagged})</button>
+        <button class="btn" onclick="showHistory('posted')">APPROVED FEED (${posted})</button>
+    `;
+}
+
+function openHistory(){
+    showMainHistory();
+    document.getElementById("historyModal").style.display="flex";
+}
+
+function showHistory(type){
+    let content = document.getElementById("historyContent");
+    let data = [];
+    if(type === "blockedUsers") data = Object.keys(blockedUsers).map(u=>`🚫 @${u}`);
+    else if(type === "blockedComments") data = history.filter(h=>h.status==="Blocked").map(h=>`@${h.user}: ${h.text}`);
+    else if(type === "flagged") data = history.filter(h=>h.status==="Flagged").map(h=>`@${h.user}: ${h.text}`);
+    else if(type === "posted") data = history.filter(h=>h.status==="Posted").map(h=>`@${h.user}: ${h.text}`);
+
+    content.innerHTML = `
+        <button class="btn" onclick="showMainHistory()" style="background:#334155; border:none; margin-bottom: 20px;">⬅ BACK TO OVERVIEW</button>
+        <div style="max-height:250px; overflow-y:auto; font-size:13px; color: var(--text-dim);">
+            ${data.length===0 ? "<p>No entries found.</p>" : data.map(d=>`<div style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">${d}</div>`).join("")}
+        </div>
+    `;
+}
+
+function closeHistory(){ document.getElementById("historyModal").style.display="none"; }
+function openSettings(){ document.getElementById("settingsModal").style.display="flex"; }
+function saveSettings(){
+    autoLimit = document.getElementById("limit").value;
+    alert("System Security Protocols Updated.");
+    document.getElementById("settingsModal").style.display="none";
+}
+</script>
+
+</body>
+</html>
