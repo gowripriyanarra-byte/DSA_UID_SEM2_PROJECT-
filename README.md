@@ -1,4 +1,4 @@
- **🛡️ Influencer Guard Pro AI-Based Suspicious Comment Detection & Moderation System**
+**🛡️ Influencer Guard Pro AI-Based Suspicious Comment Detection & Moderation System**
 
 
 **🚀 Overview**
