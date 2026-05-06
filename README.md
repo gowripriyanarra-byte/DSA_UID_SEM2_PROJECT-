@@ -201,3 +201,56 @@ Reduces risk score if the sentence appears harmless
 ✅ Purpose:
 Reduces false positives
 Handles slang and informal language
+
+
+🔹 5. Threshold-Based Classification Algorithm
+
+This algorithm makes the final decision using a threshold value.
+
+✔️ How it works:
+Final risk score is compared with a predefined threshold
+If score ≥ threshold → Suspicious
+If score < threshold → Safe
+📌 Example:
+Threshold = 0.7
+Score = 0.8 → Suspicious
+Score = 0.3 → Safe
+✅ Purpose:
+Standardizes classification
+Makes system tunable and flexible
+
+
+🔹 6. Safe Content Detection Algorithm
+
+This algorithm specifically identifies positive, harmless, or neutral content.
+
+✔️ How it works:
+Detects words related to:
+Compliments
+Performance
+General conversation
+Overrides or reduces risk score when safe intent is clear
+📌 Example:
+"Great performance!"
+
+👉 Classified as Safe
+
+✅ Purpose:
+Prevents misclassification
+Improves user experience
+
+
+🔹 7. User History Storage & Retrieval Algorithm
+
+This algorithm manages user activity tracking for moderation and analysis.
+
+✔️ How it works:
+Stores user inputs and classification results in a database
+Retrieves past records when needed
+Helps track repeated suspicious behavior
+📌 Example:
+User sends multiple suspicious messages
+👉 System can flag or block user
+✅ Purpose:
+Enables moderation control
+Supports future improvements and analytics
